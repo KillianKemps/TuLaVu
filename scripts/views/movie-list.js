@@ -3,10 +3,11 @@ var MovieListView = Backbone.View.extend({
   el: '#app',
 
   events: {
-    'submit form': 'addMovie'
+    'submit form': 'addMovie',
+    'change input[type="radio"]': 'seeMovie'
   },
 
-  addMovie: function() {
+  addMovie: function(event) {
     // Kill submit event
     event.preventDefault();
 
@@ -25,6 +26,32 @@ var MovieListView = Backbone.View.extend({
     this.render();
   },
 
+  seeMovie: function(event) {
+    var $input = $(event.currentTarget);
+    var inputValue = $input.val();
+
+    // On récupère le data-title du li parent
+    var movieTitle = $input.parents('li').attr('data-title');
+
+    // On regarde la collection si on a un modèle correspondant
+    var targetModel = this.myMovieCollection.findWhere({
+      title: movieTitle
+    });
+
+    // On met à jour la propriété seen
+    if(targetModel) {
+      if(inputValue === 'seen') {
+        targetModel.set({
+          seen: true
+        });
+      } else {
+        targetModel.set({
+          seen: false
+        });
+      }
+    }
+  },
+
   getTemplate: function(movieData) {
     var isSeenChecked = '';
     var isNotSeenChecked = 'checked';
@@ -35,7 +62,7 @@ var MovieListView = Backbone.View.extend({
     }
 
     var movieTemplate = '\
-      <li>\
+      <li data-title="' + movieData.title + '">\
         <h2>' + movieData.title + '</h2>\
         <img src="' + movieData.poster + '" />\
         <form>\
