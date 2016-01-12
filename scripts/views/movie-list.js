@@ -44,6 +44,8 @@ var MovieListView = Backbone.View.extend({
         seen: inputValue === 'seen'
       });
     }
+
+    this.render();
   },
 
   getTemplate: function(movieData) {
@@ -82,6 +84,10 @@ var MovieListView = Backbone.View.extend({
   render: function() {
     var $renderTarget = this.$('.movie-list');
 
+    var $movieTotal = this.$('.movie-total');
+    var $movieSeenTotal = this.$('.movie-seen-total');
+    var $movieUnseenTotal = this.$('.movie-unseen-total');
+
     // On le réinitialise
     $renderTarget.empty();
 
@@ -89,13 +95,25 @@ var MovieListView = Backbone.View.extend({
     // Ce qui retourne un tableau d'objets
     var allMyMovies = this.myMovieCollection.toJSON();
 
+    // On va comptabiliser les films vus
+    var seenMovies = 0;
+
     for (var i = 0; i < allMyMovies.length; i++) {
       var movie = allMyMovies[i];
+
+      if(movie.seen) {
+        seenMovies++;
+      }
 
       var movieTemplate = this.getTemplate(movie);
 
       // Une fois le template récupéré, on l'ajoute au DOM
       $renderTarget.append(movieTemplate);
     }
+
+    // On affiche les statistiques
+    $movieTotal.text(allMyMovies.length);
+    $movieSeenTotal.text(seenMovies);
+    $movieUnseenTotal.text(allMyMovies.length - seenMovies);
   }
 });
