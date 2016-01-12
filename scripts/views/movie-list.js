@@ -26,10 +26,24 @@ var MovieListView = Backbone.View.extend({
   },
 
   getTemplate: function(movieData) {
+    var isSeenChecked = '';
+    var isNotSeenChecked = 'checked';
+
+    if(movieData.seen) {
+      isSeenChecked = 'checked';
+      isNotSeenChecked =  '';
+    }
+
     var movieTemplate = '\
       <li>\
         <h2>' + movieData.title + '</h2>\
         <img src="' + movieData.poster + '" />\
+        <form>\
+          <label for="seen">Vu</label>\
+          <input ' + isSeenChecked + 'type="radio" class="movie-seen" name="movie" value="seen">\
+          <label for="not-seen">Pas vu</label>\
+          <input ' + isNotSeenChecked + 'type="radio" class="movie-unseen" name="movie" value="unseen">\
+        </form>\
       </li>\
     ';
 
