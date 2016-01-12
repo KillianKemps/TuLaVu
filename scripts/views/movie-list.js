@@ -40,15 +40,9 @@ var MovieListView = Backbone.View.extend({
 
     // On met à jour la propriété seen
     if(targetModel) {
-      if(inputValue === 'seen') {
-        targetModel.set({
-          seen: true
-        });
-      } else {
-        targetModel.set({
-          seen: false
-        });
-      }
+      targetModel.set({
+        seen: inputValue === 'seen'
+      });
     }
   },
 
