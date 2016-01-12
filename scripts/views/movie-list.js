@@ -13,5 +13,19 @@ var MovieListView = Backbone.View.extend({
   },
 
   render: function() {
+    var $renderTarget = this.$('.movie-list');
+
+    // On le réinitialise
+    $renderTarget.empty();
+
+    // On récupère tous les films de la collection
+    // Ce qui retourne un tableau d'objets
+    var allMyMovies = this.myMovieCollection.toJSON();
+
+    for (var i = 0; i < allMyMovies.length; i++) {
+      var movie = allMyMovies[i];
+
+      var movieTemplate = this.getTemplate(movie);
+    }
   }
 });
